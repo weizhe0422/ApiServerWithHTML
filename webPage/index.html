@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Api Service Example Pa
+        ge</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div>
+        <!-- Button trigger modal -->
+        <div>
+            <div class="col-md-12">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    新輸入參數
+                </button>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">輸入Key與Value後點擊送出按鈕</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="">第一組</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="key" id="1stKey">
+                            <input type="text" class="form-control" placeholder="value" id="1stvalue">
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="">第二組</span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="key" id="2ndKey">
+                            <input type="text" class="form-control" placeholder="value" id="2ndvalue">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉視窗</button>
+                        <button type="button" class="btn btn-primary" id="send-request">送出</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $('#send-request').on('click',function () {
+            var inputData = $('#1stKey').val()+"="+$('#1stvalue').val()+"&"+$('#2ndKey').val()+"="+$('#2ndvalue').val()
+            var respText = $.ajax({
+                                url:"/test/show",
+                                type:"get",
+                                dataType:"string",
+                                data:inputData,
+                                async:false,
+                                success:console.log("success")
+            }).responseText
+            alert(respText)
+        })
+    </script>
+</body>
+</html>
