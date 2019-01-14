@@ -24,10 +24,10 @@ func handleDisplay(resp http.ResponseWriter, req *http.Request) {
 			respString.Write([]byte(key + ":" + value + "\n"))
 		}
 	}
-
 	resp.Write(respString.Bytes())
-
 }
+
+
 func main() {
 	var (
 		mux            *http.ServeMux
@@ -36,13 +36,14 @@ func main() {
 		listener       net.Listener
 		httpDir        http.Dir
 		webPageHandler http.Handler
+		waitCh			chan string
 	)
-
-	httpDir = http.Dir("./webPage")
-	webPageHandler = http.FileServer(httpDir)
 
 	mux = http.NewServeMux()
 	mux.HandleFunc("/test/show", handleDisplay)
+
+	httpDir = http.Dir("./webPage")
+	webPageHandler = http.FileServer(httpDir)
 	mux.Handle("/", http.StripPrefix("/", webPageHandler))
 
 	httpSvr = &http.Server{
@@ -53,12 +54,11 @@ func main() {
 
 	if listener, err = net.Listen("tcp", ":8080"); err != nil {
 		log.Fatalf("failed to new listener: %s", err)
+		return
 	}
 
 	go httpSvr.Serve(listener)
 
-	for {
-		time.Sleep(1 * time.Second)
-	}
+	<- waitCh
 
 }
